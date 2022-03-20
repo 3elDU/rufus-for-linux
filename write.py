@@ -6,20 +6,20 @@ def formate_usb(device:str, file_system:str, name:str):
     print("unmountig device")
     os.system("umount -r "+device)
     print("Wipe device")
-    os.system("mkfs."+file_system+" -I -n "+name+" "+device)
+    os.system("mkfs."+file_system+" -n "+name+" "+device)
 
 def write_iso(iso_file:str, device_to_write:str):
-    formate_usb(device=device_to_write, file_system="vfat", name="FLASH")
+    os.system("umount /mnt/iso")
+    os.system("umount /mnt/flash")
+    formate_usb(device=device_to_write, file_system="exfat", name="FLASH")
     print("mounting iso...")
     os.system("mkdir /mnt/iso")
     os.system("mount -o loop "+iso_file+" /mnt/iso")
     print("mount device")
-    os.system("mount "+device_to_write+" /mnt/iso")
+    os.system("mount "+device_to_write+" /mnt/flash")
     print("writing...")
-    os.system("cp -rL /mnt/iso /mnt/flash")
+    os.system("cp -rLv /mnt/iso/* /mnt/flash")
     print("done!")
-    os.system("umount /mnt/iso")
-    os.system("umount /mnt/flash")
 
 
 write_iso(iso_file=sys.argv[1], device_to_write=sys.argv[2])
