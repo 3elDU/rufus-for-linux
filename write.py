@@ -4,7 +4,7 @@ import sys
 
 def formate_usb(device:str, file_system:str, name:str):
     print("unmountig device")
-    os.system("umount -rf "+device)
+    os.system("umount -Rf "+device)
     print("Wipe device")
     os.system("mkfs."+file_system+" -I -n "+name+" "+device)
 
@@ -20,7 +20,7 @@ def write_iso(iso_file:str, device_to_write:str):
     print("writing...")
     os.system("cp -rLv /mnt/iso/* /mnt/flash")
     print("DONE!!!")
-    os.system("umount -rf "+device_to_write)
+    os.system("umount -Rf "+device_to_write)
     os.system("umount -f "+iso_file)
 
 
