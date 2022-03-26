@@ -1,1 +1,3 @@
-#This is a test file, it serves to test the functions developed in the program kernel.
+import core.core
+state = ""
+core.gui = self
