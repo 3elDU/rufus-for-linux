@@ -1,5 +1,9 @@
 # Rufus-for-Linux - Linux version of the Rufus utility!
 
+
+
+![photo_2022-03-26_18-51-12.jpg](/home/ketronix/Документы/rufus-for-linux/images/photo_2022-03-26_18-51-12.jpg)
+
 <u>**RUS:**</u>
 
 ## Что это такое?
