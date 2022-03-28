@@ -1,1 +1,1 @@
-i18n.gettext('rfl-ui', preset: 'glib')
+i18n.gettext('rufus-for-linux', preset: 'glib')

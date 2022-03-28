@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+	<remap-dir as-path="/usr/share/fonts">/run/host/fonts</remap-dir>
+</fontconfig>

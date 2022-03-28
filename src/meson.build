@@ -1,9 +1,9 @@
 pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
-moduledir = join_paths(pkgdatadir, 'rfl_ui')
+moduledir = join_paths(pkgdatadir, 'rufus_for_linux')
 gnome = import('gnome')
 
-gnome.compile_resources('rfl-ui',
-  'rfl_ui.gresource.xml',
+gnome.compile_resources('rufus-for-linux',
+  'rufus_for_linux.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
@@ -18,17 +18,17 @@ conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('pkgdatadir', pkgdatadir)
 
 configure_file(
-  input: 'rfl-ui.in',
-  output: 'rfl-ui',
+  input: 'rufus-for-linux.in',
+  output: 'rufus-for-linux',
   configuration: conf,
   install: true,
   install_dir: get_option('bindir')
 )
 
-rfl_ui_sources = [
+rufus_for_linux_sources = [
   '__init__.py',
   'main.py',
   'window.py',
 ]
 
-install_data(rfl_ui_sources, install_dir: moduledir)
+install_data(rufus_for_linux_sources, install_dir: moduledir)

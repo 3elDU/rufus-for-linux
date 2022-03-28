@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=Rufus for Linux
-Exec=rfl-ui
+Name=rufus-for-linux
+Exec=rufus-for-linux
 Icon=org.example.App
 Terminal=false
 Type=Application

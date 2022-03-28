@@ -3,12 +3,11 @@
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "master",
     "sdk" : "org.gnome.Sdk",
-    "command" : "rfl-ui",
+    "command" : "rufus-for-linux",
     "finish-args" : [
         "--share=network",
         "--share=ipc",
         "--socket=fallback-x11",
-        "--device=dri",
         "--socket=wayland"
     ],
     "cleanup" : [
@@ -24,13 +23,13 @@
     ],
     "modules" : [
         {
-            "name" : "rfl-ui",
+            "name" : "rufus-for-linux",
             "builddir" : true,
             "buildsystem" : "meson",
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/bahirev/Projects/rufus-for-linux/rfl-ui"
+                    "url" : "https://github.com/OSeL-Team/rufus-for-linux"
                 }
             ]
         }

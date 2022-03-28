@@ -1,4 +1,6 @@
-# window.py
+#!@PYTHON@
+
+# rufus-for-linux.in
 #
 # Copyright 2022 Aristarh Bahirev
 #
@@ -15,14 +17,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
+import os
+import sys
+import signal
+import gettext
 
+VERSION = '@VERSION@'
+pkgdatadir = '@pkgdatadir@'
+localedir = '@localedir@'
 
-@Gtk.Template(resource_path='/org/example/App/window.ui')
-class RufusForLinuxWindow(Gtk.ApplicationWindow):
-    __gtype_name__ = 'RufusForLinuxWindow'
+sys.path.insert(1, pkgdatadir)
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+gettext.install('rufus-for-linux', localedir)
 
-    label = Gtk.Template.Child()
+if __name__ == '__main__':
+    import gi
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    from gi.repository import Gio
+    resource = Gio.Resource.load(os.path.join(pkgdatadir, 'rufus-for-linux.gresource'))
+    resource._register()
+
+    from rufus_for_linux import main
+    sys.exit(main.main(VERSION))

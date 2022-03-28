@@ -2,6 +2,5 @@
 <gresources>
   <gresource prefix="/org/example/App">
     <file>window.ui</file>
-    <file>gtk/help-overlay.ui</file>
   </gresource>
 </gresources>
