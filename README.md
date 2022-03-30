@@ -10,10 +10,10 @@
 </h2>
 
 <p align="center">
-  <a href="https://t.me/crazy_linux_chat"><img src="https://github.com/OSeL-Team/rufus-for-linux/tree/ui/visual/chat-telegram.svg" alt="telegram">
+  <a href="https://t.me/crazy_linux_chat"><img src="https://github.com/OSeL-Team/rufus-for-linux/blob/ui/visual/chat-telegram.svg" alt="telegram">
   </a>
   <a href="https://www.gnu.org/licenses/gpl-3.0.html">
-    <img src="https://github.com/OSeL-Team/rufus-for-linux/tree/ui/visual/license-gpl.svg" alt="license">
+    <img src="https://github.com/OSeL-Team/rufus-for-linux/blob/ui/visual/license-gpl.svg" alt="license">
   </a>
 </p>
 
@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-![screenshot](https://github.com/OSeL-Team/rufus-for-linux/ui/visual/screenshot.jpg)
+![screenshot](https://github.com/OSeL-Team/rufus-for-linux/blob/ui/visual/screenshot.jpg)
 </p>
 
 ## Key Features
