@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://osel.pp.ua/"><img src="https://github.com/OSeL-Team/rufus-for-linux/tree/ui/visual/rfl-logo.svg" alt="RFL logo" width="200"></a>
+  <a href="https://osel.pp.ua/"><img src="https://github.com/OSeL-Team/rufus-for-linux/blob/ui/visual/rfl-logo.svg" alt="RFL logo" width="200"></a>
   <br>
   Rufus for Linux
   <br>
