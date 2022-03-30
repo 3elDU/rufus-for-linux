@@ -199,12 +199,11 @@
         </child>
         <child>
           <object class="GtkEntry" id="format_entry">
-            <property name="width-request">150</property>
+            <property name="width-request">160</property>
             <property name="height-request">10</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="halign">center</property>
-            <property name="caps-lock-warning">False</property>
             <property name="primary-icon-activatable">False</property>
             <property name="secondary-icon-activatable">False</property>
             <property name="primary-icon-sensitive">False</property>
@@ -214,6 +213,82 @@
           <packing>
             <property name="x">10</property>
             <property name="y">272</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="filesystem_text">
+            <property name="width-request">80</property>
+            <property name="height-request">20</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">File system</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans 10"/>
+              <attribute name="style" value="normal"/>
+              <attribute name="weight" value="normal"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">198</property>
+            <property name="y">250</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="filesystem_box">
+            <property name="width-request">130</property>
+            <property name="height-request">10</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="border-width">2</property>
+            <property name="active">1</property>
+            <property name="has-entry">True</property>
+            <property name="active-id">fs_num2</property>
+            <items>
+              <item id="fs_num1">ntfs</item>
+              <item id="fs_num2">fat32</item>
+            </items>
+            <child internal-child="entry">
+              <object class="GtkEntry">
+                <property name="can-focus">False</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">195</property>
+            <property name="y">270</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="status_text">
+            <property name="width-request">70</property>
+            <property name="height-request">30</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">Status</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans 14"/>
+              <attribute name="style" value="normal"/>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">11</property>
+            <property name="y">325</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkProgressBar" id="progress_bar">
+            <property name="width-request">105</property>
+            <property name="height-request">14</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="pulse-step">1</property>
+            <property name="text">READY</property>
+            <property name="show-text">True</property>
+          </object>
+          <packing>
+            <property name="x">135</property>
+            <property name="y">390</property>
           </packing>
         </child>
       </object>
