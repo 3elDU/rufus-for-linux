@@ -1,4 +1,4 @@
-# Rufus for Linux. UI development branch
+# Rufus for Linux. UI branch
 
 > *Developed by [Aristarh Bahirev](https://github.com/AristarhBahirev) on Arch Linux / pop!_OS (20.04)*
 
