@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-![screenshot](https://github.com/OSeL-Team/rufus-for-linux/blob/ui/visual/screenshot.jpg)
+  <a href="#"><img src="https://github.com/OSeL-Team/rufus-for-linux/blob/ui/visual/screenshot.jpg" alt="screenshot">
 </p>
 
 ## Key Features
