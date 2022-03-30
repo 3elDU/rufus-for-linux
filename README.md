@@ -1,6 +1,6 @@
 # Rufus for Linux. UI branch
 
-> *Developed by [Aristarh Bahirev](https://github.com/AristarhBahirev) on Arch Linux / pop!_OS (20.04)*
+> Developed by [Aristarh Bahirev](https://github.com/AristarhBahirev) on Arch Linux / pop!_OS (20.04)
 
 This branch is needed to develop the interface of the utility and its basic testing
 
