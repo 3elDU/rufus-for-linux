@@ -1,13 +1,14 @@
-#!/usr/bin/env python3
-
 import os
-import re
-import sys
-import stat
-import shutil
 import pathlib
+import re
+import shutil
 import subprocess
+import sys
 from xml.dom.minidom import parseString
+
+import WoeUSB.miscellaneous as miscellaneous
+
+_ = miscellaneous.i18n
 
 #: Disable message coloring when set to True, set by --no-color
 no_color = False
@@ -30,41 +31,41 @@ def check_runtime_dependencies(application_name):
     """
     result = "success"
 
-    system_commands = ["mount", "wipefs", "lsblk", "blockdev", "df", "parted", "7z"]
+    system_commands = ["mount", "umount", "wipefs", "lsblk", "blockdev", "df", "parted", "7z"]
     for command in system_commands:
         if shutil.which(command) is None:
             print_with_color(
-                "Error: " + application_name + " requires " + command +
-                " command in the executable search path, but it is not found.",
+                _("Error: {0} requires {1} command in the executable search path, but it is not found.").format(
+                    application_name, command),
                 "red")
             result = "failed"
 
     fat = ["mkdosfs", "mkfs.msdos", "mkfs.vfat", "mkfs.fat"]
     for command in fat:
-        if shutil.which(command) != "":
+        if shutil.which(command) is not None:
             fat = command
             break
 
     if isinstance(fat, list):
-        print_with_color("Error: mkdosfs/mkfs.msdos/mkfs.vfat/mkfs.fat command not found!", "red")
-        print_with_color("Error: Please make sure that dosfstools is properly installed!", "red")
+        print_with_color(_("Error: mkdosfs/mkfs.msdos/mkfs.vfat/mkfs.fat command not found!"), "red")
+        print_with_color(_("Error: Please make sure that dosfstools is properly installed!"), "red")
         result = "failed"
 
     ntfs = "mkntfs"
-    if shutil.which("mkntfs") == "":
-        print_with_color("Error: mkntfs command not found!", "red")
-        print_with_color("Error: Please make sure that ntfs-3g is properly installed!", "red")
+    if shutil.which("mkntfs") is None:
+        print_with_color(_("Error: mkntfs command not found!"), "red")
+        print_with_color(_("Error: Please make sure that ntfs-3g is properly installed!"), "red")
         result = "failed"
 
     grub = ["grub-install", "grub2-install"]
     for command in grub:
-        if shutil.which(command) != "":
+        if shutil.which(command) is not None:
             grub = command
             break
 
     if isinstance(grub, list):
-        print_with_color("Error: grub-install or grub2-install command not found!", "red")
-        print_with_color("Error: Please make sure that GNU GRUB is properly installed!", "red")
+        print_with_color(_("Error: grub-install or grub2-install command not found!"), "red")
+        print_with_color(_("Error: Please make sure that GNU GRUB is properly installed!"), "red")
         result = "failed"
 
     if result != "success":
@@ -82,20 +83,21 @@ def check_runtime_parameters(install_mode, source_media, target_media):
     """
     if not os.path.isfile(source_media) and not pathlib.Path(source_media).is_block_device():
         print_with_color(
-            "Error: source media \"" + source_media + "\" not found or not a regular file or a block device file!",
+            _("Error: Source media \"{0}\" not found or not a regular file or a block device file!").format(
+                source_media),
             "red")
         return 1
 
     if not pathlib.Path(target_media).is_block_device():
-        print_with_color("Error: Target media \"" + target_media + "\" is not a block device file!", "red")
+        print_with_color(_("Error: Target media \"{0}\" is not a block device file!").format(target_media), "red")
         return 1
 
     if install_mode == "device" and target_media[-1].isdigit():
-        print_with_color("Error: Target media \"" + target_media + "\" is not an entire storage device!", "red")
+        print_with_color(_("Error: Target media \"{0}\" is not an entire storage device!").format(target_media), "red")
         return 1
 
     if install_mode == "partition" and not target_media[-1].isdigit():
-        print_with_color("Error: Target media \"" + target_media + "\" is not an partition!", "red")
+        print_with_color(_("Error: Target media \"{0}\" is not an partition!").format(target_media), "red")
         return 1
     return 0
 
@@ -117,8 +119,8 @@ def determine_target_parameters(install_mode, target_media):
         target_partition = target_media + str(1)
 
     if verbose:
-        print_with_color("Info: Target device is " + target_device)
-        print_with_color("Info: Target partition is " + target_partition)
+        print_with_color(_("Info: Target device is {0}").format(target_device))
+        print_with_color(_("Info: Target partition is {0}").format(target_partition))
 
     return [target_device, target_partition]
 
@@ -130,7 +132,11 @@ def check_is_target_device_busy(device):
     """
     mount = subprocess.run("mount", stdout=subprocess.PIPE).stdout.decode("utf-8").strip()
     if re.findall(device, mount) != []:
-        return 1
+        mounts = re.findall(rf'{device}\S*', mount)
+        print_with_color(_("Warning: The following partitions will be unmounted: {0}").format(mounts), "yellow")
+        for partition in mounts:
+            if subprocess.run(["umount", partition]).returncode:
+                return 1
     return 0
 
 
@@ -143,18 +149,19 @@ def check_source_and_target_not_busy(install_mode, source_media, target_device, 
     :return:
     """
     if check_is_target_device_busy(source_media):
-        print_with_color("Error: Source media is currently mounted, unmount the partition then try again", "red")
+        print_with_color(_("Error: Source media is currently mounted, unmount the partition then try again"), "red")
         return 1
 
     if install_mode == "partition":
         if check_is_target_device_busy(target_partition):
-            print_with_color("Error: Target partition is currently mounted, unmount the partition then try again",
+            print_with_color(_("Error: Target partition is currently mounted, unmount the partition then try again"),
                              "red")
             return 1
     else:
         if check_is_target_device_busy(target_device):
             print_with_color(
-                "Error: Target device is currently busy, unmount all mounted partitions in target device then try again",
+                _(
+                    "Error: Target device is currently busy, unmount all mounted partitions in target device then try again"),
                 "red")
             return 1
 
@@ -169,10 +176,13 @@ def check_fat32_filesize_limitation(source_fs_mountpoint):
             path = os.path.join(dirpath, file)
             if os.path.getsize(path) > (2 ** 32) - 1:  # Max fat32 file size
                 print_with_color(
-                    "Warining: File " + path + " in source image has exceed the FAT32 Filesystem 4GiB Single File Size Limitation, swiching to NTFS filesystem.",
+                    _(
+                        "Warning: File {0} in source image has exceed the FAT32 Filesystem 4GiB Single File Size Limitation, swiching to NTFS filesystem.").format(
+                        path),
                     "yellow")
                 print_with_color(
-                    "Refer: https://github.com/slacka/WoeUSB/wiki/Limitations#fat32-filesystem-4gib-single-file-size-limitation for more info.",
+                    _(
+                        "Refer: https://github.com/slacka/WoeUSB/wiki/Limitations#fat32-filesystem-4gib-single-file-size-limitation for more info."),
                     "yellow")
                 return 1
     return 0
@@ -196,7 +206,7 @@ def check_target_partition(target_partition, target_device):
     elif target_filesystem == "ntfs":
         check_uefi_ntfs_support_partition(target_device)
     else:
-        print_with_color("Error: Target filesystem not supported, currently supported filesystem: FAT, NTFS.", "red")
+        print_with_color(_("Error: Target filesystem not supported, currently supported filesystem: FAT, NTFS."), "red")
         return 1
 
     return 0
@@ -217,10 +227,10 @@ def check_uefi_ntfs_support_partition(target_device):
 
     if re.findall("UEFI_NTFS", lsblk) != []:
         print_with_color(
-            "Warning: Your device doesn't seems to have an UEFI:NTFS partition, "
-            "UEFI booting will fail if the motherboard firmware itself doesn't support NTFS filesystem!")
+            _("Warning: Your device doesn't seems to have an UEFI:NTFS partition, "
+              "UEFI booting will fail if the motherboard firmware itself doesn't support NTFS filesystem!"))
         print_with_color(
-            "Info: You may recreate disk with an UEFI:NTFS partition by using the --device creation method")
+            _("Info: You may recreate disk with an UEFI:NTFS partition by using the --device creation method"))
 
 
 def check_target_filesystem_free_space(target_fs_mountpoint, source_fs_mountpoint, target_partition):
@@ -252,11 +262,15 @@ def check_target_filesystem_free_space(target_fs_mountpoint, source_fs_mountpoin
     needed_space += additional_space_required_for_grub_installation
 
     if needed_space > free_space:
-        print_with_color("Error: Not enough free space on target partition!")
+        print_with_color(_("Error: Not enough free space on target partition!"))
         print_with_color(
-            "Error: We required " + str(get_size(
-                str(needed_space))) + "(" + str(needed_space) + " bytes) but '" + target_partition + "' only has " + str(
-                free_space) + "(" + str(free_space) + " bytes).")
+            _("Error: We required {0}({1} bytes) but '{2}' only has {3}({4} bytes).")
+            .format(
+                str(get_size(str(needed_space))),
+                str(needed_space),
+                target_partition,
+                str(free_space),
+                str(free_space)))
         return 1
 
 
@@ -291,7 +305,7 @@ def convert_to_human_readable_format(num, suffix='B'):
 
 def get_size(path):
     total_size = 0
-    for dirpath, _, filenames in os.walk(path):
+    for dirpath, __, filenames in os.walk(path):
         for file in filenames:
             path = os.path.join(dirpath, file)
             total_size += os.path.getsize(path)
@@ -314,7 +328,6 @@ def check_kill_signal():
 
 # noinspection DuplicatedCode
 def update_policy_to_allow_for_running_gui_as_root(path):
-
     dom = parseString(
         "<?xml version=\"1.0\" ?>"
         "<!DOCTYPE policyconfig  PUBLIC '-//freedesktop//DTD polkit Policy Configuration 1.0//EN'  "
