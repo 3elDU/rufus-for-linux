@@ -6,8 +6,8 @@
   <br>
 </h1>
 
-<h2 align="center">Linux version of the <a href="https://rufus.ie/en/" target="_blank">Rufus</a> utility
-</h2>
+<h3 align="center">Linux version of the <a href="https://rufus.ie/en/" target="_blank">Rufus</a> utility
+</h3>
 
 <p align="center">
   <a href="https://t.me/crazy_linux_chat"><img src="https://github.com/OSeL-Team/rufus-for-linux/blob/ui/visual/chat-telegram.svg" alt="telegram">
