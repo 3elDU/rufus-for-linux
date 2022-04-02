@@ -59,6 +59,6 @@ Distributed under the GPL-3.0 License
 ## Contact us
 If you are actively coding on 
 [Python](https://www.python.org/) and [GTK](https://www.gtk.org/) 
-then write us an [e-mail](ketronix2@gmail.com)
+then write us an [e-mail](mailto:ketronix2@gmail.com)
 
 
