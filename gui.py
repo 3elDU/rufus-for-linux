@@ -93,14 +93,14 @@ class MainPanel(wx.Panel):
         self.__usbStickList = wx.ListBox(self, wx.ID_ANY)
         main_sizer.Add(self.__usbStickList, 0.5, wx.EXPAND)
 
-        # Progress
-        #main_sizer.AddSpacer(20)
+         #Progress
+        main_sizer.AddSpacer(20)
 
-        #self.__progressStatus = wx.StaticText(self, wx.ID_ANY, _("Статус:"))
-        #main_sizer.Add(self.__progressStatus, 0, 0, 2)
+        self.__progressStatus = wx.StaticText(self, wx.ID_ANY, _("Статус:"))
+        main_sizer.Add(self.__progressStatus, 0, 0, 2)
 
-        #self.__progress = wx.Gauge(self, wx.ID_ANY, range = 100, style = wx.GA_HORIZONTAL)
-        #main_sizer.Add(self.__progress, 0, wx.EXPAND, 3)
+        self.__progress = wx.Gauge(self, wx.ID_ANY, range = 100, style = wx.GA_HORIZONTAL)
+        main_sizer.Add(self.__progress, 0, wx.EXPAND, 3)
 
         # Buttons
         main_sizer.AddSpacer(30)
