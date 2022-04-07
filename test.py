@@ -17,7 +17,7 @@ pulse_started = False
 
 def on_install():
     if PathEntry.get() != "":
-        global woe
+        global woe, pulse_started
         if messagebox.askquestion("Внимание!", "Уверены? Все данные на выбранном носителе будут УНИЧТОЖЕНЫ! Возможно, без возможности восстановления.") == "no":
             return
 
@@ -27,22 +27,24 @@ def on_install():
         
         filesystem = "FAT"
 
+        progress_bar.start()
+
         woe = WoeUSB_handler(iso, device, boot_flag=True, filesystem=filesystem)
         woe.start()
 
         while woe.is_alive():
-            if woe.progress != True:
-                labelStatus['text'] = woe.state
-                if pulse_started != True:
-                    progress_bar.start()
-                    pulse_started = True
+            if not woe.progress:
+                labelStatus['text'] = str(woe.state)
+                # if pulse_started != True:
+                #     progress_bar.start()
+                #     pulse_started = True
                 time.sleep(0.06)
             else:
-                if pulse_started != False:
-                    progress_bar.stop()
-                    progress_bar.configure(mode = "determinate")
-                    pulse_started = False
-                labelStatus['text'] = woe.state
+                # if pulse_started != False:
+                #     progress_bar.stop()
+                #     progress_bar.configure(mode = "determinate")
+                #     pulse_started = False
+                labelStatus['text'] = str(woe.state)
                 progress_bar['value'] = progress_bar['value'] + 1
 
             # if not status:
@@ -52,10 +54,10 @@ def on_install():
             #         woe.kill = True
             #         break
 
-            if woe.error == "":
-                messagebox.showinfo("Внимание!","Запись завершена успешно!!")
-            else:
-                messagebox.showinfo("Внимание!", "Упс... Что-то сломалось. Записать образ не удалось!" + "\n" + str(woe.error))
+        if woe.error == "":
+            messagebox.showinfo("Внимание!","Запись завершена успешно!!")
+        else:
+            messagebox.showinfo("Внимание!", "Упс... Что-то сломалось. Записать образ не удалось!" + "\n" + str(woe.error))
 
 def open_iso():
     file_name = fd.askopenfilename(filetypes = ((".ISO files", ".iso"), (".DMG files", ".dmg"), (".IMG files", ".img"), (".RAW files", ".raw")))
