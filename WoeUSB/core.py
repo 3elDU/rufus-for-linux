@@ -669,7 +669,7 @@ class ReportCopyProgress(threading.Thread):
         while not self.stop:
             target_size = utils.get_size(self.target)
 
-            if len_ != 0 and gui is None:
+            if len_ != 0:
                 print('\033[3A')
                 print(" " * len_)
                 print(" " * 4)
@@ -686,12 +686,8 @@ class ReportCopyProgress(threading.Thread):
             len_ = len(string)
             percentage = (target_size * 100) // source_size
 
-            if gui is not None:
-                gui.state = string
-                gui.progress = percentage
-            else:
-                print(string)
-                print(str(percentage) + "%")
+            print(string)
+            print(str(percentage) + "%")
 
             time.sleep(0.05)
         if gui is not None:
