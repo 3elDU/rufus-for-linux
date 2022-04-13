@@ -1,18 +1,10 @@
-import time
 import threading
-
-import WoeUSB.list_devices as list_devices
+import sys
 import WoeUSB.core as core
 
 
-def on_install():
+def on_install(device:str, iso:str, filesystem:str):
     global woe
-
-    device = "/dev/sdb"
-
-    iso = "/home/ketronix/Загрузки/elementaryos-6.1-stable.20211218-rc.iso"
-        
-    filesystem = "FAT"
 
     woe = WoeUSB_handler(iso, device, boot_flag=True, filesystem=filesystem)
     woe.start()
@@ -50,4 +42,4 @@ class WoeUSB_handler(threading.Thread):
 
         core.cleanup(source_fs_mountpoint, target_fs_mountpoint, temp_directory, target_media)
 
-on_install()
+on_install(device=sys.argv[1], iso=sys.argv[2], filesystem=sys.argv[3])

@@ -193,9 +193,9 @@ def main(source_fs_mountpoint, target_fs_mountpoint, source_media, target_media,
 
     workaround.support_windows_7_uefi_boot(source_fs_mountpoint, target_fs_mountpoint)
 
-    install_legacy_pc_bootloader_grub(target_fs_mountpoint, target_device, command_grubinstall)
+    #install_legacy_pc_bootloader_grub(target_fs_mountpoint, target_device, command_grubinstall)
 
-    install_legacy_pc_bootloader_grub_config(target_fs_mountpoint, target_device, command_grubinstall, name_grub_prefix)
+    #install_legacy_pc_bootloader_grub_config(target_fs_mountpoint, target_device, command_grubinstall, name_grub_prefix)
 
     if workaround_bios_boot_flag:
         workaround.buggy_motherboards_that_ignore_disks_without_boot_flag_toggled(target_device)
