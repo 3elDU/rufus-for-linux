@@ -17,7 +17,7 @@ no_color = False
 try:
     import termcolor
 except ImportError:
-    print("Module termcolor is not installed, text coloring disabled")
+    #print("Module termcolor is not installed, text coloring disabled")
     no_color = True
 
 gui = None
@@ -57,21 +57,21 @@ def check_runtime_dependencies(application_name):
         print_with_color(_("Error: Please make sure that ntfs-3g is properly installed!"), "red")
         result = "failed"
 
-    grub = ["grub-install", "grub2-install"]
-    for command in grub:
-        if shutil.which(command) is not None:
-            grub = command
-            break
+    # grub = ["grub-install", "grub2-install"]
+    # for command in grub:
+    #     if shutil.which(command) is not None:
+    #         grub = command
+    #         break
 
-    if isinstance(grub, list):
-        print_with_color(_("Error: grub-install or grub2-install command not found!"), "red")
-        print_with_color(_("Error: Please make sure that GNU GRUB is properly installed!"), "red")
-        result = "failed"
+    # if isinstance(grub, list):
+    #     print_with_color(_("Error: grub-install or grub2-install command not found!"), "red")
+    #     print_with_color(_("Error: Please make sure that GNU GRUB is properly installed!"), "red")
+    #     result = "failed"
 
     if result != "success":
         raise RuntimeError("Dependencies are not met")
     else:
-        return [fat, ntfs, grub]
+        return [fat, ntfs] #grub
 
 
 def check_runtime_parameters(install_mode, source_media, target_media):

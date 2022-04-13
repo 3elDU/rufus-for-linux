@@ -28,18 +28,14 @@ class WoeUSB_handler(threading.Thread):
         self.filesystem = filesystem
 
     def run(self):
-        source_fs_mountpoint, target_fs_mountpoint, temp_directory, target_media = core.init(
+        source_fs_mountpoint, target_fs_mountpoint, target_media = core.init(
             from_cli=False,
             install_mode="device",
             source_media=self.source,
             target_media=self.target
         )
-        try:
-            core.main(source_fs_mountpoint, target_fs_mountpoint, self.source, self.target, "device", temp_directory,
+        core.main(source_fs_mountpoint, target_fs_mountpoint, self.source, self.target, "device",
                       self.filesystem, self.boot_flag)
-        except SystemExit:
-            pass
-
-        core.cleanup(source_fs_mountpoint, target_fs_mountpoint, temp_directory, target_media)
 
 on_install(device=sys.argv[1], iso=sys.argv[2], filesystem=sys.argv[3])
+core.cleanup("/media/woeusb_source", "/media/woeusb_target", sys.argv[1])

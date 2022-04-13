@@ -35,9 +35,11 @@ def buggy_motherboards_that_ignore_disks_without_boot_flag_toggled(target_device
         _("Applying workaround for buggy motherboards that will ignore disks with no partitions with the boot flag toggled")
     )
 
-    subprocess.run(["parted", "--script",
+    boot_flag_on = subprocess.run(["parted", "--script",
                     target_device,
                     "set", "1", "boot", "on"])
+
+    print(boot_flag_on)
 
 
 def support_windows_7_uefi_boot(source_fs_mountpoint, target_fs_mountpoint):

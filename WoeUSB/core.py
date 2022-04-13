@@ -4,13 +4,10 @@ import os
 import time
 import shutil
 import argparse
-import tempfile
 import traceback
 import threading
 import subprocess
-import urllib.request
 import urllib.error
-from datetime import datetime
 
 import WoeUSB.utils as utils
 import WoeUSB.workaround as workaround
@@ -52,12 +49,8 @@ def init(from_cli=True, install_mode=None, source_media=None, target_media=None,
     :param filesystem_label:
     :return: List
     """
-    source_fs_mountpoint = "/media/woeusb_source_" + str(
-        round((datetime.today() - datetime.fromtimestamp(0)).total_seconds())) + "_" + str(os.getpid())
-    target_fs_mountpoint = "/media/woeusb_target_" + str(
-        round((datetime.today() - datetime.fromtimestamp(0)).total_seconds())) + "_" + str(os.getpid())
-
-    temp_directory = tempfile.mkdtemp(prefix="WoeUSB.")
+    source_fs_mountpoint = "/media/woeusb_source"
+    target_fs_mountpoint = "/media/woeusb_target"
 
     verbose = False
 
@@ -105,13 +98,13 @@ def init(from_cli=True, install_mode=None, source_media=None, target_media=None,
     utils.gui = gui
 
     if from_cli:
-        return [source_fs_mountpoint, target_fs_mountpoint, temp_directory, install_mode, source_media, target_media,
+        return [source_fs_mountpoint, target_fs_mountpoint, install_mode, source_media, target_media,
                 workaround_bios_boot_flag, target_filesystem_type, filesystem_label, verbose, debug, parser]
     else:
-        return [source_fs_mountpoint, target_fs_mountpoint, temp_directory, target_media]
+        return [source_fs_mountpoint, target_fs_mountpoint, target_media]
 
 
-def main(source_fs_mountpoint, target_fs_mountpoint, source_media, target_media, install_mode, temp_directory,
+def main(source_fs_mountpoint, target_fs_mountpoint, source_media, target_media, install_mode,
          target_filesystem_type, workaround_bios_boot_flag, parser=None):
     """
     :param parser:
@@ -133,11 +126,11 @@ def main(source_fs_mountpoint, target_fs_mountpoint, source_media, target_media,
 
     current_state = 'enter-init'
 
-    command_mkdosfs, command_mkntfs, command_grubinstall = utils.check_runtime_dependencies(application_name)
-    if command_grubinstall == "grub-install":
-        name_grub_prefix = "grub"
-    else:
-        name_grub_prefix = "grub2"
+    command_mkdosfs, command_mkntfs = utils.check_runtime_dependencies(application_name) #command_grubinstall
+    # if command_grubinstall == "grub-install":
+    #     name_grub_prefix = "grub"
+    # else:
+    #     name_grub_prefix = "grub2"
 
     utils.print_with_color(application_name + " v" + application_version)
     utils.print_with_color("==============================")
@@ -174,7 +167,7 @@ def main(source_fs_mountpoint, target_fs_mountpoint, source_media, target_media,
 
         if target_filesystem_type == "NTFS":
             create_uefi_ntfs_support_partition(target_device)
-            install_uefi_ntfs_support_partition(target_device + "2", temp_directory)
+            install_uefi_ntfs_support_partition(target_device + "2")
 
     if install_mode == "partition":
         utils.check_target_partition(target_partition, target_device)
@@ -201,6 +194,7 @@ def main(source_fs_mountpoint, target_fs_mountpoint, source_media, target_media,
         workaround.buggy_motherboards_that_ignore_disks_without_boot_flag_toggled(target_device)
 
     current_state = "finished"
+    print(current_state)
 
     return 0
 
@@ -369,16 +363,7 @@ def install_uefi_ntfs_support_partition(uefi_ntfs_partition, download_directory)
     """
     utils.check_kill_signal()
 
-    try:
-        fileName = urllib.request.urlretrieve("https://github.com/pbatard/rufus/raw/master/res/uefi/uefi-ntfs.img", "uefi-ntfs.img")[0] #[local_filename, headers]
-    except (urllib.error.ContentTooShortError, urllib.error.HTTPError, urllib.error.URLError):
-        utils.print_with_color(
-            _("Warning: Unable to download UEFI:NTFS partition image from GitHub, installation skipped.  Target device might not be bootable if the UEFI firmware doesn't support NTFS filesystem."), "yellow")
-        return 1
-
-    shutil.move(fileName, download_directory + "/" + fileName)  # move file to download_directory
-
-    shutil.copy2(download_directory + "/uefi-ntfs.img", uefi_ntfs_partition)
+    shutil.copy2("uefi-ntfs.img", uefi_ntfs_partition)
 
 
 def mount_source_filesystem(source_media, source_fs_mountpoint):
@@ -391,7 +376,7 @@ def mount_source_filesystem(source_media, source_fs_mountpoint):
 
     utils.print_with_color(_("Mounting source filesystem..."), "green")
 
-    # os.makedirs(source_fs_mountpoint, exist_ok=True)
+    os.makedirs(source_fs_mountpoint, exist_ok=True)
 
     if subprocess.run(["mkdir", "--parents", source_fs_mountpoint]).returncode != 0:
         utils.print_with_color(_("Error: Unable to create {0} mountpoint directory").format(source_fs_mountpoint), "red")
@@ -426,7 +411,7 @@ def mount_target_filesystem(target_partition, target_fs_mountpoint):
 
     utils.print_with_color(_("Mounting target filesystem..."), "green")
 
-    # os.makedirs(target_fs_mountpoint, exist_ok=True)
+    os.makedirs(target_fs_mountpoint, exist_ok=True)
 
     if subprocess.run(["mkdir", "--parents", target_fs_mountpoint]).returncode != 0:
         utils.print_with_color(_("Error: Unable to create {0} mountpoint directory").format(target_fs_mountpoint), "red")
@@ -506,45 +491,45 @@ def copy_large_file(source, target):
     target_file.close()
 
 
-def install_legacy_pc_bootloader_grub(target_fs_mountpoint, target_device, command_grubinstall):
-    """
-    :param target_fs_mountpoint:
-    :param target_device:
-    :param command_grubinstall:
-    :return: None
-    """
-    utils.check_kill_signal()
+# def install_legacy_pc_bootloader_grub(target_fs_mountpoint, target_device, command_grubinstall):
+#     """
+#     :param target_fs_mountpoint:
+#     :param target_device:
+#     :param command_grubinstall:
+#     :return: None
+#     """
+#     utils.check_kill_signal()
 
-    utils.print_with_color(_("Installing GRUB bootloader for legacy PC booting support..."), "green")
+#     utils.print_with_color(_("Installing GRUB bootloader for legacy PC booting support..."), "green")
 
-    subprocess.run([command_grubinstall,
-                    "--target=i386-pc",
-                    "--boot-directory=" + target_fs_mountpoint,
-                    "--force", target_device])
+#     subprocess.run([command_grubinstall,
+#                     "--target=i386-pc",
+#                     "--boot-directory=" + target_fs_mountpoint,
+#                     "--force", target_device])
 
 
-def install_legacy_pc_bootloader_grub_config(target_fs_mountpoint, target_device, command_grubinstall,
-                                             name_grub_prefix):
-    """
-    Install a GRUB config file to chainload Microsoft Windows's bootloader in Legacy PC bootmode
+# def install_legacy_pc_bootloader_grub_config(target_fs_mountpoint, target_device, command_grubinstall,
+#                                              name_grub_prefix):
+#     """
+#     Install a GRUB config file to chainload Microsoft Windows's bootloader in Legacy PC bootmode
 
-    :param target_fs_mountpoint: Target filesystem's mountpoint(where GRUB is installed)
-    :param target_device:
-    :param command_grubinstall:
-    :param name_grub_prefix: May be different between distributions, so need to be specified (grub/grub2)
-    :return: None
-    """
-    utils.check_kill_signal()
+#     :param target_fs_mountpoint: Target filesystem's mountpoint(where GRUB is installed)
+#     :param target_device:
+#     :param command_grubinstall:
+#     :param name_grub_prefix: May be different between distributions, so need to be specified (grub/grub2)
+#     :return: None
+#     """
+#     utils.check_kill_signal()
 
-    utils.print_with_color(_("Installing custom GRUB config for legacy PC booting..."), "green")
+#     utils.print_with_color(_("Installing custom GRUB config for legacy PC booting..."), "green")
 
-    grub_cfg = target_fs_mountpoint + "/" + name_grub_prefix + "/grub.cfg"
+#     grub_cfg = target_fs_mountpoint + "/" + name_grub_prefix + "/grub.cfg"
 
-    os.makedirs(target_fs_mountpoint + "/" + name_grub_prefix, exist_ok=True)
+#     os.makedirs(target_fs_mountpoint + "/" + name_grub_prefix, exist_ok=True)
 
-    with open(grub_cfg, "w") as cfg:
-        cfg.write("ntldr /bootmgr\n")
-        cfg.write("boot")
+#     with open(grub_cfg, "w") as cfg:
+#         cfg.write("ntldr /bootmgr\n")
+#         cfg.write("boot")
 
 
 def cleanup_mountpoint(fs_mountpoint):
@@ -569,7 +554,7 @@ def cleanup_mountpoint(fs_mountpoint):
     return 0
 
 
-def cleanup(source_fs_mountpoint, target_fs_mountpoint, temp_directory, target_media):
+def cleanup(source_fs_mountpoint, target_fs_mountpoint, target_media):
     """
     :param source_fs_mountpoint:
     :param target_fs_mountpoint:
@@ -611,8 +596,6 @@ def cleanup(source_fs_mountpoint, target_fs_mountpoint, temp_directory, target_m
             "yellow")
     else:
         utils.print_with_color(_("You may now safely detach the target device"), "green")
-
-    shutil.rmtree(temp_directory)
 
     if current_state == "finished":
         utils.print_with_color(_("Done :)"), "green")
@@ -701,13 +684,13 @@ def run():
     if isinstance(result, list) is False:
         return
 
-    source_fs_mountpoint, target_fs_mountpoint, temp_directory, \
+    source_fs_mountpoint, target_fs_mountpoint, \
         install_mode, source_media, target_media, \
         workaround_bios_boot_flag, target_filesystem_type, new_file_system_label, \
         verbose, debug, parser = result
 
     try:
-        main(source_fs_mountpoint, target_fs_mountpoint, source_media, target_media, install_mode, temp_directory,
+        main(source_fs_mountpoint, target_fs_mountpoint, source_media, target_media, install_mode,
              target_filesystem_type, workaround_bios_boot_flag, parser)
     except KeyboardInterrupt:
         pass
@@ -716,7 +699,7 @@ def run():
         if debug:
             traceback.print_exc()
 
-    cleanup(source_fs_mountpoint, target_fs_mountpoint, temp_directory, target_media)
+    cleanup(source_fs_mountpoint, target_fs_mountpoint, target_media)
 
 
 if __name__ == "__main__":
