@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://osel.pp.ua/"><img src="https://github.com/OSeL-Team/rufus-for-linux/blob/ui/visual/rfl-logo.svg" alt="RFL logo" width="200"></a>
+  <a href="https://osel.pp.ua/"><img src="https://github.com/OSeL-Team/rufus-for-linux/blob/main/visual/rfl-logo.svg" alt="RFL logo" width="180"></a>
   <br>
   Rufus for Linux
   <br>
@@ -10,10 +10,10 @@
 </h3>
 
 <p align="center">
-  <a href="https://t.me/crazy_linux_chat"><img src="https://github.com/OSeL-Team/rufus-for-linux/blob/ui/visual/chat-telegram.svg" alt="telegram">
+  <a href="https://t.me/crazy_linux_chat"><img src="https://github.com/OSeL-Team/rufus-for-linux/blob/main/visual/chat-telegram.svg" alt="telegram">
   </a>
   <a href="https://www.gnu.org/licenses/gpl-3.0.html">
-    <img src="https://github.com/OSeL-Team/rufus-for-linux/blob/ui/visual/license-gpl.svg" alt="license">
+    <img src="https://github.com/OSeL-Team/rufus-for-linux/blob/main/visual/license-gpl.svg" alt="license">
   </a>
 </p>
 
@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-  <a href="#"><img src="https://github.com/OSeL-Team/rufus-for-linux/blob/main/img/screenshot.png" alt="screenshot">
+  <a href="#"><img src="https://github.com/OSeL-Team/rufus-for-linux/blob/main/visual/screenshot.png" alt="screenshot">
 </p>
 
 ## Key Features
@@ -44,6 +44,7 @@ You can [download](https://github.com/OSeL-Team/rufus-for-linux/releases) the la
 This software uses the following open source packages:
 
 + [Python](https://www.python.org/)
++ [Vala](https://wiki.gnome.org/Projects/Vala)
 + [GTK](https://www.gtk.org/)
 + [Meson](https://mesonbuild.com/)
 + [Flatpak](https://flatpak.org/)
@@ -58,7 +59,6 @@ Distributed under the GPL-3.0 License
 
 ## Contact us
 If you are actively coding on 
-[Python](https://www.python.org/) and [GTK](https://www.gtk.org/) 
-then write us an [e-mail](mailto:ketronix2@gmail.com)
+[Python](https://www.python.org/), [Vala](https://www.gtk.org/docs/language-bindings/vala/) and [GTK](https://www.gtk.org/) then write us an [e-mail](mailto:ketronix2@gmail.com)
 
 
