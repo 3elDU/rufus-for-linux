@@ -5,8 +5,8 @@
 This branch is needed to develop the interface of the utility and its basic testing
 
 ## The main tasks of the gtk4-ui branch
-+ Writing and maintaining interface layout on [XML](https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction)
-+ Writing and maintaining interface code on [Vala](https://wiki.gnome.org/Projects/Vala)
++ Writing and maintaining interface layout in [XML](https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction)
++ Writing and maintaining interface code in [Vala](https://wiki.gnome.org/Projects/Vala)
 + Development documentation
 + Refinement of included technologies
 + Initial testing
