@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.38.2 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <template class="RufusForLinuxWindow" parent="GtkApplicationWindow">
+    <property name="can-focus">False</property>
+    <property name="resizable">False</property>
+    <property name="default-width">400</property>
+    <property name="default-height">600</property>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="title">Rufus for Linux</property>
+        <property name="has-subtitle">False</property>
+        <property name="show-close-button">True</property>
+      </object>
+    </child>
+    <child>
+      <!-- n-columns=3 n-rows=10 -->
+      <object class="GtkGrid" id="body_grid">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

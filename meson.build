@@ -1,20 +1,23 @@
-project('com.github.neagiry.rfl', 'vala', 'c')
+project('rufus-for-linux', ['c', 'vala'],
+          version: '0.1.0',
+    meson_version: '>= 0.59.0',
+  default_options: [ 'warning_level=2',
+                     'werror=false',
+                   ],
+)
 
-executable(
-    meson.project_name(),
+i18n = import('i18n')
 
-    'src/main.vala',
-    'src/application.vala',
-    'src/window.vala',
+gnome = import('gnome')
 
-    dependencies: [
-        dependency('gee-0.8'),
-        dependency('gio-2.0'),
-        dependency('glib-2.0'),
-        dependency('gobject-2.0'),
-        dependency('gtk+-3.0'),
-        dependency('granite', version: '>=6.0.0'),
-    ],
 
-    install: true
+
+subdir('data')
+subdir('src')
+subdir('po')
+
+gnome.post_install(
+  glib_compile_schemas: true,
+  gtk_update_icon_cache: true,
+  update_desktop_database: true,
 )
