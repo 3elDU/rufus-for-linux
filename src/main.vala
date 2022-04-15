@@ -16,13 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-int main (string[] args) {
+async int main (string[] args) {
 	var app = new Gtk.Application ("org.example.App", ApplicationFlags.FLAGS_NONE);
 	app.activate.connect (() => {
 		var win = app.active_window;
-		if (win == null) {
-			win = new RufusForLinux.Window (app);
-		}
+		win = new RufusForLinux.Window (app);
 		win.present ();
 	});
 

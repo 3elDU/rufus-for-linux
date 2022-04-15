@@ -17,10 +17,12 @@
  */
 
 namespace RufusForLinux {
+
 	[GtkTemplate (ui = "/org/example/App/window.ui")]
 	public class Window : Gtk.ApplicationWindow {
 		public Window (Gtk.Application app) {
 			Object (application: app);
 		}
 	}
+
 }
