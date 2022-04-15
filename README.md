@@ -1,10 +1,10 @@
-# Rufus for Linux. gtk4-ui branch
+# Rufus for Linux. gtk3-ui branch
 
 > Developed by [Ivan Neagiry](https://github.com/Neagiry) on openSUSE Tumbleweed and [Aristarh Bahirev](https://github.com/AristarhBahirev) on Arch Linux 
 
 This branch is needed to develop the interface of the utility and its basic testing
 
-## The main tasks of the gtk4-ui branch
+## The main tasks of the gtk3-ui branch
 + Writing and maintaining interface layout in [XML](https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction)
 + Writing and maintaining interface code in [Vala](https://wiki.gnome.org/Projects/Vala)
 + Development documentation
@@ -18,17 +18,14 @@ This branch is needed to develop the interface of the utility and its basic test
 - [ ] Writing UI function
 - [ ] Writing job documentation
 - [ ] Multi-language Support
-    - [ ] English
+    - [x] English
     - [ ] Русский
     - [ ] Український
     - [ ] Français
     - [ ] Deutch
     - [ ] Suomalainen
     - [ ] Español
-- [ ] Porting a project from [GTK3](https://developer-old.gnome.org/gtk3/stable/) to modern technology stack
-
-## WARNING
-In order to compile the program, we kindly ask you to **REMOVE the legacy-ui.zip** archive from the project folder, otherwise the compiler will give you errors
+- [ ] Porting a project from [GTK3](https://developer-old.gnome.org/gtk3/stable/) to modern technology stack [GTK4](https://www.gtk.org/)
 
 ## License
 Distributed under the GPL-3.0 License
