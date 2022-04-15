@@ -25,7 +25,7 @@ This branch is needed to develop the interface of the utility and its basic test
     - [ ] Deutch
     - [ ] Suomalainen
     - [ ] Español
-- [ ] Porting a project from [GTK3](https://developer-old.gnome.org/gtk3/stable/) to modern technology stack
+- [ ] Porting a project from [GTK3](https://developer-old.gnome.org/gtk3/stable/) to modern technology stack [GTK4](https://www.gtk.org)
 
 ## License
 Distributed under the GPL-3.0 License
