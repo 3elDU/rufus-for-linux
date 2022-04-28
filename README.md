@@ -40,6 +40,15 @@
 ## Download
 You can [download](https://github.com/OSeL-Team/rufus-for-linux/releases) the latest version of this program on any Linux distribution using deb package, [AUR](https://aur.archlinux.org/packages/rufus-for-linux), [flatpak](https://www.flathub.org/home) and [AppImage](https://www.appimagehub.com/)
 
+## Install requirements
+We recommend you to create [virtual environment](https://docs.python.org/3/tutorial/venv.html), because installing packages globally is generally a bad practice.
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+The second command above may fail when using fish shell. If you use fish, instead run `source venv/bin/activate.fish`
+
 ## Technology stack
 This software uses the following open source packages:
 

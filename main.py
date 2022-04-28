@@ -1,24 +1,37 @@
+#! /usr/bin/env python3
+
 import threading
-import sys
+from argparse import ArgumentParser
 import WoeUSB.core as core
 
-
-def on_install(device:str, iso:str, filesystem:str):
+def standalone_installer(device:str, iso:str, filesystem:str):
     global woe
 
-    woe = WoeUSB_handler(iso, device, boot_flag=True, filesystem=filesystem)
-    woe.start()
+    workerThread = WoeUSB_handler(iso, device, boot_flag=True, filesystem=filesystem)
+    workerThread.start()
+
+    # Wait for the thread to complete
+    workerThread.join()
 
 class WoeUSB_handler(threading.Thread):
     """
     Class for handling communication with woeusb.
     """
-    progress = False
-    state = ""
-    error = ""
-    kill = False
+
+    progress:bool = False
+    state:str = ""
+    error:str = ""
+    kill:bool = False
 
     def __init__(self, source, target, boot_flag, filesystem):
+        """
+        Keyword arguments:
+        - source -- Source image .iso or .img file.
+        - target -- Device which will be flashed with the image. Example: /dev/sdb
+        - boot_flag = Whether the flashed device should have boot flag
+        """
+
+        # Initialize the thread
         threading.Thread.__init__(self)
 
         core.gui = self
@@ -28,14 +41,32 @@ class WoeUSB_handler(threading.Thread):
         self.filesystem = filesystem
 
     def run(self):
-        source_fs_mountpoint, target_fs_mountpoint, target_media = core.init(
+        source_fs_mountpoint, target_fs_mountpoint, _ = core.init(
             from_cli=False,
             install_mode="device",
             source_media=self.source,
             target_media=self.target
         )
+
         core.main(source_fs_mountpoint, target_fs_mountpoint, self.source, self.target, "device",
                       self.filesystem, self.boot_flag)
+        core.cleanup("/media/woeusb_source", "/media/woeusb_target", parsed_args.destination)
 
-on_install(device=sys.argv[1], iso=sys.argv[2], filesystem=sys.argv[3])
-core.cleanup("/media/woeusb_source", "/media/woeusb_target", sys.argv[1])
+
+if __name__ == '__main__':
+    args = ArgumentParser(description="Rufus for linux. Allows you to flash USB drives using CLI/GUI.")
+
+    args.add_argument("source", type=str, help="Location of file, which will be flashed to the USB drive")
+    args.add_argument("destination", type=str, help="Device (e.x. /dev/sdb) which will be flashed with the image. Note that all data on the device will be destroyed")
+
+    args.add_argument("--filesystem", type=str, default="vfat", required=False, help="Filesystem type, used to format the drive")
+
+    # Parse the arguments from sys.argv
+    parsed_args = args.parse_args()
+
+    print(parsed_args.source)
+    print(parsed_args.destination)
+    print(parsed_args.filesystem)
+
+    # run the installer with provided arguments
+    standalone_installer(device=parsed_args.destination, iso=parsed_args.source, filesystem=parsed_args.filesystem)

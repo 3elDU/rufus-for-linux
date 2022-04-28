@@ -140,7 +140,7 @@ def main(source_fs_mountpoint, target_fs_mountpoint, source_media, target_media,
         utils.print_with_color(_("Warning: This might be the reason of the following failure."), "yellow")
 
     if utils.check_runtime_parameters(install_mode, source_media, target_media):
-        parser.print_help()
+        # parser.print_help()
         return 1
 
     target_device, target_partition = utils.determine_target_parameters(install_mode, target_media)

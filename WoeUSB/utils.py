@@ -283,16 +283,10 @@ def print_with_color(text, color=""):
     :param text: Text to be printed
     :param color: Color of the text
     """
-    if gui is not None:
-        gui.state = text
-        if color == "red":
-            gui.error = text
-            sys.exit()
+    if no_color or color == "":
+        sys.stdout.write(text + "\n")
     else:
-        if no_color or color == "":
-            sys.stdout.write(text + "\n")
-        else:
-            termcolor.cprint(text, color)
+        termcolor.cprint(text, color)
 
 
 def convert_to_human_readable_format(num, suffix='B'):

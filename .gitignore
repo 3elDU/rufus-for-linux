@@ -1,0 +1,4 @@
+# Ignore python's virtual environment, and other binary files
+venv/
+__pycache__/
+WoeUSB/__pycache__/
