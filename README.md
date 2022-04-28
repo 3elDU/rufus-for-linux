@@ -20,9 +20,9 @@ This branch is needed to develop the interface of the utility and its basic test
 - [ ] Multi-language Support
     - [ ] English
     - [ ] Русский
-    - [ ] Український
+    - [ ] Українська
     - [ ] Français
-    - [ ] Deutch
+    - [ ] Deutsch
     - [ ] Suomalainen
     - [ ] Español
 - [ ] Porting a project from [GTK3](https://developer-old.gnome.org/gtk3/stable/) to modern technology stack [GTK4](https://www.gtk.org)
